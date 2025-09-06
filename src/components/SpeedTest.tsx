@@ -77,6 +77,11 @@ export default function SpeedTest() {
           และความสั่นไหวโดยตรงจากเซิร์ฟเวอร์ของคุณ
         </p>
 
+        <p className="subtitle">
+          หมายเหตุ: ถ้าโหลดช้า แสดงว่าเน็ตมึงกาก ทดทบกับเครื่องของมึงเอง
+          ไม่ใช้ผ่าน <strong>Server กลางใดๆ</strong> ทั้งสิ้น
+        </p>
+
         <div className="grid">
           <div className="metric">
             <h3>Download</h3>
