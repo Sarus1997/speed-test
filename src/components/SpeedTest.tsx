@@ -78,8 +78,8 @@ export default function SpeedTest() {
         </p>
 
         <p className="subtitle">
-          หมายเหตุ: ถ้าโหลดช้า แสดงว่าเน็ตมึงกาก ทดทบกับเครื่องของมึงเอง
-          ไม่ใช้ผ่าน <strong>Server กลางใดๆ</strong> ทั้งสิ้น
+          หมายเหตุ: ถ้าโหลดช้า แสดงว่าเน็ตมึงกาก ทดสอบกับเครื่องของมึงเอง
+          ไม่ใช่ผ่าน <strong>Server กลางใดๆ</strong> ทั้งสิ้น
         </p>
 
         <div className="grid">
