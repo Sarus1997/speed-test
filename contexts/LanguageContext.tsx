@@ -15,7 +15,7 @@ const translations: Record<Lang, Record<string, string>> = {
     subtitle1:
       "วัดการดาวน์โหลด การอัปโหลด ความหน่วง และความสั่นไหวโดยตรงจากเซิร์ฟเวอร์ของคุณ",
     subtitle2:
-      "หมายเหตุ: การทดสอบความเร็วอินเตอร์เน็ต จะทดสอบผ่าน Server ของ Vercel ทั้งสิ้น",
+      "หมายเหตุ: การทดสอบความเร็วอินเตอร์เน็ต จะทดสอบผ่าน Server ของ Vercel",
     download: "ดาวน์โหลด",
     upload: "อัปโหลด",
     latency: "เวลาในการตอบสนอง",
@@ -34,12 +34,16 @@ const translations: Record<Lang, Record<string, string>> = {
     summarySlow:
       "การเชื่อมต่ออินเทอร์เน็ตค่อนข้างช้า อาจกระตุกเมื่อดูวิดีโอหรือเล่นเกมออนไลน์",
     server: "เซิร์ฟเวอร์: Queenstown Estate",
+
+    // Footer
+    developer: "ผู้พัฒนา",
   },
   en: {
     title: "Internet Speed Test",
     subtitle1:
       "Measure download, upload, latency and jitter directly from your server",
-    subtitle2: "Note: The speed test runs entirely through Vercel's server",
+    subtitle2:
+      "Note: Internet speed tests are performed through Vercel's servers.",
     download: "Download",
     upload: "Upload",
     latency: "Latency",
@@ -58,6 +62,9 @@ const translations: Record<Lang, Record<string, string>> = {
     summarySlow:
       "Your internet connection is quite slow. You may experience lag when streaming or gaming online.",
     server: "Server: Queenstown Estate",
+
+    // Footer
+    developer: "Developer",
   },
 };
 
