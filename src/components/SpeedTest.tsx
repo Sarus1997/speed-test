@@ -2,6 +2,7 @@
 import styles from "../scss/SpeedTest.module.scss";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { testDownload, testLatency, testUpload } from "@/lib/speedTest";
+import { useLang } from "contexts/LanguageContext";
 
 function fmt(n: number, digits = 1) {
   return n.toLocaleString(undefined, {
@@ -11,13 +12,15 @@ function fmt(n: number, digits = 1) {
 }
 
 export default function SpeedTest() {
+  const { t } = useLang();
   const [running, setRunning] = useState(false);
-  const [status, setStatus] = useState("Ready");
+  const [status, setStatus] = useState(t("ready"));
   const [download, setDownload] = useState(0);
   const [upload, setUpload] = useState(0);
   const [latency, setLatency] = useState(0);
   const [jitter, setJitter] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [done, setDone] = useState(false);
 
   const totalPlan = 100_000_000 + 40_000_000;
   const downloadedRef = useRef(0);
@@ -26,7 +29,8 @@ export default function SpeedTest() {
   const run = useCallback(async () => {
     if (running) return;
     setRunning(true);
-    setStatus("Measuring latency...");
+    setDone(false);
+    setStatus(t("measuring"));
     setProgress(0);
     setDownload(0);
     setUpload(0);
@@ -39,7 +43,7 @@ export default function SpeedTest() {
     setLatency(lat.latencyMs);
     setJitter(lat.jitterMs);
 
-    setStatus("Testing download speed...");
+    setStatus(t("testingDownload"));
     const down = await testDownload({
       onProgress: (b) => {
         downloadedRef.current = b;
@@ -48,7 +52,7 @@ export default function SpeedTest() {
     });
     setDownload(down);
 
-    setStatus("Testing upload speed...");
+    setStatus(t("testingUpload"));
     const up = await testUpload({
       onProgress: (b) => {
         uploadedRef.current = b;
@@ -57,52 +61,62 @@ export default function SpeedTest() {
     });
     setUpload(up);
 
-    setStatus("Done");
+    setStatus(t("done"));
     setRunning(false);
-  }, [running, totalPlan]);
+    setDone(true);
+  }, [running, totalPlan, t]);
 
   const progressPct = useMemo(
     () => Math.min(100, Math.round(progress * 100)),
     [progress]
   );
 
+  const getSummary = () => {
+    let summaryKey = "summarySlow";
+    if (download > 200 && upload > 100) summaryKey = "summaryFast";
+    else if (download > 50 && upload > 20) summaryKey = "summaryGood";
+
+    return (
+      <>
+        <p>
+          {t("latency")}: {fmt(latency, 0)} ms
+        </p>
+        <p>{t("server")}</p>
+        <p>{t(summaryKey)}</p>
+      </>
+    );
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className="card">
         <div className="header">
-          <h2>ทดสอบความเร็วอินเตอร์เน็ต</h2>
+          <h2>{t("title")}</h2>
         </div>
-        <p className="subtitle">
-          วัดการดาวน์โหลด การอัปโหลด ความหน่วง
-          และความสั่นไหวโดยตรงจากเซิร์ฟเวอร์ของคุณ
-        </p>
-
-        <p className="subtitle">
-          หมายเหตุ: ถ้าโหลดช้า แสดงว่าเน็ตมึงกาก ทดสอบกับเครื่องของมึงเอง
-          ไม่ใช่ผ่าน <strong>Server กลางใดๆ</strong> ทั้งสิ้น
-        </p>
+        <p className="subtitle">{t("subtitle1")}</p>
+        <p className="subtitle">{t("subtitle2")}</p>
 
         <div className="grid">
           <div className="metric">
-            <h3>Download</h3>
+            <h3>{t("download")}</h3>
             <div className="value">
               {fmt(download)} <small>Mbps</small>
             </div>
           </div>
           <div className="metric">
-            <h3>Upload</h3>
+            <h3>{t("upload")}</h3>
             <div className="value">
               {fmt(upload)} <small>Mbps</small>
             </div>
           </div>
           <div className="metric small">
-            <h3>Latency</h3>
+            <h3>{t("latency")}</h3>
             <div className="value">
               {fmt(latency, 0)} <small>ms</small>
             </div>
           </div>
           <div className="metric small">
-            <h3>Jitter</h3>
+            <h3>{t("jitter")}</h3>
             <div className="value">
               {fmt(jitter, 0)} <small>ms</small>
             </div>
@@ -116,7 +130,7 @@ export default function SpeedTest() {
 
         <div className="actions">
           <button className="primary" disabled={running} onClick={run}>
-            Start test
+            {t("start")}
           </button>
           <button
             className="ghost"
@@ -127,12 +141,15 @@ export default function SpeedTest() {
               setLatency(0);
               setJitter(0);
               setProgress(0);
-              setStatus("Ready");
+              setStatus(t("ready"));
+              setDone(false);
             }}
           >
-            Reset
+            {t("reset")}
           </button>
         </div>
+
+        {done && <div className="summary">{getSummary()}</div>}
       </div>
     </div>
   );

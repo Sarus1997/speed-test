@@ -1,6 +1,8 @@
 import Footer from "@/components/Footer";
 import "./globals.scss";
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import { LanguageProvider } from "contexts/LanguageContext";
 
 export const metadata: Metadata = {
   title: "Speed Test",
@@ -15,8 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen">
-        <div className="container flex-1">{children}</div>
-        <Footer />
+        <LanguageProvider>
+          {" "}
+          {/* ✅ ครอบ Provider */}
+          <Navbar />
+          <div className="container flex-1">{children}</div>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
