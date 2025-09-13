@@ -10,7 +10,7 @@ export default function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.logo}>MyApp</div>
+      <div className={styles.logo}>SR</div>
 
       <button
         className={styles.hamburger}
@@ -26,6 +26,9 @@ export default function Navbar() {
         </li>
         <li>
           <Link href="/about">About</Link>
+        </li>
+        <li>
+          <Link href="/game/tic-tac-toe">Game</Link>
         </li>
         <li>
           {/* ✅ ปุ่มเปลี่ยนภาษา */}
